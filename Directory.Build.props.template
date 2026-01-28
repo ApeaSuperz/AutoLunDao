@@ -1,6 +1,6 @@
 ﻿<Project>
     <PropertyGroup>
-        <!-- 请复制此文件为 Directory.Build.props 并修改为你的游戏路径 -->
+        <!-- 请复制此文件为 Directory.Build.props.user 并修改为你的游戏路径 -->
         <GamePath>F:\Steam\steamapps\common\觅长生</GamePath>
     </PropertyGroup>
 </Project>
