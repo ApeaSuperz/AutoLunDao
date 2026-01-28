@@ -1,0 +1,73 @@
+﻿# Build outputs
+[Bb]in/
+[Oo]bj/
+out/
+build/
+artifacts/
+
+# Rider
+.idea/
+*.sln.DotSettings.user
+*.DotSettings.user
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userprefs
+*.vcxproj.user
+*.psess
+*.vsp
+*.vspx
+
+# NuGet
+packages/
+*.nupkg
+project.lock.json
+project.assets.json
+.nuget/
+
+# ReSharper
+_ReSharper*/
+
+# Test results and coverage
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+coverage/
+*.lcov
+
+# Logs
+*.log
+
+# Local secrets/config used during development
+appsettings.Development.json
+local.settings.json
+secrets.json
+secrets.user
+.env
+.env.*
+
+# Database and local data files
+*.mdf
+*.ldf
+*.sqlite
+*.db
+
+# Packages (JS tooling, if present)
+node_modules/
+bower_components/
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Misc
+*.vsix
+*.sqlproj.user
+*.bak
+*.backup
