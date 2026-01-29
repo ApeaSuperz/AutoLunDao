@@ -224,21 +224,21 @@ public static class StrategyUtils
     {
         var score = 0f;
 
-        // 1. 空位无变化或变多，说明有合成，给最高分
-        if (before.Spaces >= after.Spaces)
-            score += (before.Spaces - after.Spaces + 1) * 1000f;
+        // 1. 空位无变化或变多，说明有合成，给予丰厚奖励，鼓励合成
+        if (before.Spaces <= after.Spaces)
+            score += (after.Spaces - before.Spaces + 1) * 1000f;
 
         // 2. 查看论题完成情况，完成论题给大量奖励
         if (before.Topics.Count > after.Topics.Count)
             score += (before.Topics.Count - after.Topics.Count) * 200f;
 
-        // 3. 查看桌面卡牌变化，越接近论题最高分，给越多分数
-        score += (from topic in after.Topics
-            let cards = after.Table.Where(c => c.TopicID == topic.ID).ToList()
-            where cards.Count != 0
-            let maxGoal = topic.Goals.Max()
-            let maxValue = cards.Max(c => c.Value)
-            select (float)maxValue / maxGoal * 50f).Sum();
+        // 3. 对于未完成的论题，统计完成进度的提升，给予适当奖励
+        // 只对比 after 中的 Topics，避免 before 中已完成的论题影响评分
+        var progressDiff = (from topic in after.Topics
+            let beforeProgress = _CalculateTopicCompletionProgress(topic, before.Table)
+            let afterProgress = _CalculateTopicCompletionProgress(topic, after.Table)
+            select afterProgress - beforeProgress).Sum();
+        score += (float)progressDiff * 200f;
 
         return score;
     }
@@ -262,5 +262,27 @@ public static class StrategyUtils
         actions.AddRange(from card in state.Hand let key = (card.TopicID, card.Value) where seen.Add(key) select card);
 
         return actions;
+    }
+
+    /// <summary>
+    ///     计算论题完成进度。
+    /// </summary>
+    /// <param name="topic">目标论题</param>
+    /// <param name="table">桌面</param>
+    /// <returns>论题在桌面上的完成进度</returns>
+    private static double _CalculateTopicCompletionProgress(Topic topic, List<Card> table)
+    {
+        if (topic.Goals.Count == 0) return 1.0;
+
+        // 全部换算成 Value = 0 的卡片数量作对比
+        var currentWorth = table
+            .Where(c => c.TopicID == topic.ID)
+            .Select(c => Math.Pow(2, c.Value))
+            .Sum();
+        var goalWorth = topic.Goals
+            .Select(g => Math.Pow(2, g))
+            .Sum();
+
+        return currentWorth / goalWorth;
     }
 }
