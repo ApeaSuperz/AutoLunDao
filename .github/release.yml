@@ -1,0 +1,13 @@
+﻿changelog:
+  categories:
+    - title: 重大变更 🛠
+      labels:
+        - Semver-Major
+        - breaking-change
+    - title: 新功能 🎉
+      labels:
+        - Semver-Minor
+        - enhancement
+    - title: 其它改动 🐛
+      labels:
+        - "*"
