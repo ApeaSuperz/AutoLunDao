@@ -6,7 +6,7 @@
 
 ## 功能特性
 
-- 🎯 多种决策策略：支持贪心策略、前瞻策略、MCTS（蒙特卡洛树搜索）等
+- 🎯 多种决策策略：支持贪心策略、前瞻策略等
 - 📊 实时评分展示：在卡牌上显示评分徽章
 - 🔧 可扩展架构：策略与游戏逻辑分离，便于扩展
 
@@ -62,7 +62,6 @@ AutoLunDao/
 | ImprovedBaselineStrategy | 改进的基线策略           |
 | GreedyStrategy           | 贪心策略              |
 | LookaheadStrategy        | 前瞻策略              |
-| MCTSStrategy             | 蒙特卡洛树搜索策略         |
 
 ## 开发
 

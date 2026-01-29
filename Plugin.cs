@@ -87,7 +87,6 @@ public class Plugin : BaseUnityPlugin
         Engine.Register(new ImprovedBaselineStrategy());
         // Engine.Register(new GreedyStrategy());
         Engine.Register(lookaheadStrategy);
-        // Engine.Register(new MctsStrategy());
 
         StrategyName = Config.Bind("通用", "决策策略", lookaheadStrategy.Name,
             new ConfigDescription(
