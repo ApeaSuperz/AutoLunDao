@@ -36,11 +36,11 @@
     </ItemGroup>
     <ItemGroup Condition="'$(CI)' == 'true'">
         <Reference Include="Assembly-CSharp">
-            <HintPath>libs\Assembly-CSharp-publicized.dll</HintPath>
+            <HintPath>libs\Assembly-CSharp.stub.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine.UI">
-            <HintPath>libs\UnityEngine.UI-publicized.dll</HintPath>
+            <HintPath>libs\UnityEngine.UI.stub.dll</HintPath>
             <Private>False</Private>
         </Reference>
     </ItemGroup>
