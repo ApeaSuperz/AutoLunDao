@@ -114,7 +114,7 @@ public static class StrategyUtils
     /// <param name="table"></param>
     /// <param name="topicId"></param>
     /// <param name="goalValue"></param>
-    /// <returns></returns>
+    /// <returns>指定论题的某个目标值是否已在桌面上</returns>
     public static bool HasGoalOnTable(List<Card> table, int topicId, int goalValue)
     {
         return table.Any(c => c.TopicID == topicId && c.Value == goalValue);
@@ -129,89 +129,6 @@ public static class StrategyUtils
     public static bool IsTopicGoalsOnTable(List<Card> table, Topic topic)
     {
         return topic.Goals.Count == 0 || topic.Goals.All(g => HasGoalOnTable(table, topic.ID, g));
-    }
-
-    /// <summary>
-    ///     获取桌面上已完成的论题数量。
-    /// </summary>
-    /// <param name="table"></param>
-    /// <param name="topics"></param>
-    /// <returns></returns>
-    public static int CountCompletedTopics(List<Card> table, List<Topic> topics)
-    {
-        return topics.Count(t => IsTopicGoalsOnTable(table, t));
-    }
-
-    /// <summary>
-    ///     评估状态得分（启发式评估函数）。
-    /// </summary>
-    /// <param name="state">游戏状态</param>
-    /// <returns>得分</returns>
-    public static float EvaluateState(State state)
-    {
-        // 所有论题都已完成
-        if (state.Topics.Count == 0)
-            return 10000f;
-
-        var score = 0f;
-        var table = state.Table;
-
-        foreach (var topic in state.Topics)
-        {
-            var maxGoal = topic.Goals.Max();
-
-            if (HasGoalOnTable(table, topic.ID, maxGoal))
-            {
-                score += 100f; // 完成目标点数的基础奖励
-            }
-            else
-            {
-                // 计算距离目标的进度
-                var maxValue = table
-                    .Where(c => c.TopicID == topic.ID)
-                    .Select(c => c.Value)
-                    .DefaultIfEmpty()
-                    .Max();
-
-                if (maxValue > 0 && maxValue < maxGoal)
-                    // 越接近目标点数，奖励越高
-                    score += (float)maxValue / maxGoal * 50f;
-
-                // 统计该论题在桌面上的卡牌数量（合成潜力）
-                var cardCount = table.Count(c => c.TopicID == topic.ID);
-                score += cardCount * 2f;
-            }
-        }
-
-        // 剩余回合奖励
-        score += state.TurnsLeft * 5f;
-
-        // 空位奖励
-        score += state.Spaces * 300f;
-
-        // 手牌数量（灵活性）
-        score += state.Hand.Count * 1f;
-
-        return score;
-    }
-
-    /// <summary>
-    ///     评估状态得分（启发式评估函数），考虑本次出牌前后的论题变化。
-    /// </summary>
-    /// <param name="state">要进行评估的游戏状态</param>
-    /// <param name="beforeTopics">本次出牌前的论题列表</param>
-    /// <returns>评分</returns>
-    public static float EvaluateState(State state, List<Topic> beforeTopics)
-    {
-        var score = EvaluateState(state);
-
-        // 额外奖励：检查是否完成了论题
-        var topicsBefore = beforeTopics.Count;
-        var topicsAfter = state.Topics.Count;
-        if (topicsAfter < topicsBefore)
-            score += (topicsBefore - topicsAfter) * 200f;
-
-        return score;
     }
 
     /// <summary>
