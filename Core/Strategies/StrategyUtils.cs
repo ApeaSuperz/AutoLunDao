@@ -67,12 +67,12 @@ public static class StrategyUtils
     {
         if (table is null) return [];
 
-        // 统计每个 (TopicID, Value) 的数量
-        var counts = new Dictionary<(int topicId, int value), int>();
-        foreach (var key in table.Select(card => (topicId: card.TopicID, value: card.Value)))
+        // 统计相同卡牌的数量
+        var counts = new Dictionary<Card, int>();
+        foreach (var key in table)
         {
-            counts.TryGetValue(key, out var cur);
-            counts[key] = cur + 1;
+            counts.TryGetValue(key, out var count);
+            counts[key] = count + 1;
         }
 
         // 批量处理合成对：每次把 pairs 转移到 value+1
@@ -82,15 +82,15 @@ public static class StrategyUtils
             changed = false;
 
             // 使用快照键列表，按 value 升序可使合成从低位向高位推进
-            var keys = counts.Keys.OrderBy(k => k.value).ToList();
-            foreach (var key in keys)
+            var keys = counts.Keys.OrderBy(k => k.Value).ToList();
+            foreach (var card in keys)
             {
-                if (!counts.TryGetValue(key, out var cnt) || cnt < 2) continue;
-                var pairs = cnt / 2;
-                counts[key] = cnt - pairs * 2;
-                var upKey = (key.topicId, key.value + 1);
-                counts.TryGetValue(upKey, out var upCnt);
-                counts[upKey] = upCnt + pairs;
+                if (!counts.TryGetValue(card, out var count) || count < 2) continue;
+                var pairs = count / 2;
+                counts[card] = count - pairs * 2;
+                var upCard = new Card(card.TopicID, card.Value + 1);
+                counts.TryGetValue(upCard, out var upCount);
+                counts[upCard] = upCount + pairs;
                 changed = true;
             }
         } while (changed);
@@ -99,10 +99,10 @@ public static class StrategyUtils
         var result = new List<Card>();
         foreach (var kv in counts)
         {
-            var key = kv.Key;
-            var cnt = kv.Value;
-            for (var i = 0; i < cnt; i++)
-                result.Add(new Card(key.topicId, key.value));
+            var card = kv.Key;
+            var count = kv.Value;
+            for (var i = 0; i < count; i++)
+                result.Add(new Card(card.TopicID, card.Value));
         }
 
         return result;
