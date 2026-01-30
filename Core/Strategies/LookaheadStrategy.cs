@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoLunDao.Core.Entities;
 using AutoLunDao.Core.Simulators;
 
@@ -20,7 +21,7 @@ public class LookaheadStrategy(int maxDepth = 5) : IDecisionStrategy
         var actions = StrategyUtils.GetPossibleActions(state);
 
         Card? bestCard = null;
-        var bestScore = float.MinValue;
+        var bestScore = 0f; // 初始分数为 0 而不是 float.MinValue，不打无意义的零分出牌
         foreach (var card in actions)
         {
             var score = SimulatePlay(state, simulator, card, maxDepth);
