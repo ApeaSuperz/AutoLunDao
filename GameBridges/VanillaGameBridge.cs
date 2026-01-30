@@ -94,7 +94,8 @@ public class VanillaGameBridge : IGameBridge
 
         // 读取桌面信息
         var table = manager.lunTiMag?.curLunDianList
-            ?.Select(c => new Card(c.wudaoId, c.level))
+            ?.Where(slot => !slot.isNull) // 过滤空位，空槽位是算一种卡片的，wudaoId 是 -1，干扰到合成逻辑了
+            .Select(c => new Card(c.wudaoId, c.level))
             .ToList();
         if (table is null)
         {
