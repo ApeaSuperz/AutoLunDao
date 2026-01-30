@@ -26,35 +26,47 @@ public static class StrategyUtils
     }
 
     /// <summary>
-    ///     判断打出某张卡牌，是否会导致错过该论题的最大目标点数。
+    ///     判断打出某张卡牌，是否会导致错过该论题的目标点数。
     /// </summary>
     /// <param name="card">要打出的卡牌</param>
     /// <param name="state">游戏状态</param>
-    /// <returns>打出该手牌是否会导致错过其论题的最大目标点数</returns>
-    public static bool WillCauseMissOfExistingMaxGoal(Card? card, State? state)
+    /// <returns>打出该手牌是否会导致错过其论题的目标点数</returns>
+    public static bool WillCauseMissOfGoal(Card? card, State state)
     {
-        if (card is null || state is null) return false;
+        if (card is null) return false;
 
         var topic = state.Topics.FirstOrDefault(t => t.ID == card.TopicID);
         if (topic?.Goals is null || topic.Goals.Count == 0) return false;
 
-        // 只关注该论题的最大目标点数
-        var maxGoal = topic.Goals.Max();
-
-        // 取出该论题在桌面上的所有卡
+        // 构造打出卡牌前后，桌面上该论题的卡牌列表
         var table = state.Table.Where(c => c.TopicID == card.TopicID).ToList();
-
-        // 只有当最大目标原本就在桌面上，才考虑「被错过」
-        var maxPresentOriginally = table.Any(c => c.Value == maxGoal);
-        if (!maxPresentOriginally) return false;
-
-        // 构造打出卡牌后的模拟桌面
         table.Add(card);
-        var mergedTable = MergeCardsOnTable(table);
+        var after = MergeCardsOnTable(table);
+        var before = state.Table.Where(c => c.TopicID == card.TopicID).ToList();
 
-        // 如果合成后最大目标点数不再存在，视为会错过最大目标
-        var maxPresentAfter = mergedTable.Any(c => c.TopicID == card.TopicID && c.Value == maxGoal);
-        return !maxPresentAfter;
+        // 从大到小检查目标值
+        var goals = topic.Goals.OrderByDescending(g => g).ToList();
+        foreach (var goal in goals)
+        {
+            // 如果最大目标值在打出卡牌前存在，但打出卡牌后不存在了，说明被错过了
+            var goalPresentOriginally = before.Any(c => c.Value == goal);
+            var goalPresentAfterPlay = after.Any(c => c.Value == goal);
+            if (goalPresentOriginally && !goalPresentAfterPlay) return true;
+
+            // 当前目标值是最大未完成目标值，打出的卡牌点数不应该超过该目标值，除非有合成
+            if (card.Value > goal && after.Count > before.Count) return true;
+
+            if (!goalPresentOriginally)
+                // 最大目标值都尚未完成，也就不需要检查打出的卡牌面值是否超过更小的目标值了
+                // 其实还有一点，每个点数的卡牌在牌库中的数量也是有限的
+                // 过多使用低点数卡牌合成高点数卡牌，可能会导致低点数卡牌用尽无法完成较低的目标值
+                // 当然，这是极端情况，原版游戏的规则下几乎不可能发生，而且要考虑这种情况的话，程序会非常复杂，这里暂且不考虑这种情况
+                return false;
+            // 什么事都没发生，但通过上面的检查，我们能确定当前目标值是已完成的（出现在了桌面上）
+            // 因此我们需要将下一个目标值视为「最大未完成目标值」，继续检查
+        }
+
+        return false;
     }
 
     /// <summary>

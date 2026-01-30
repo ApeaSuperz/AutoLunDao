@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using AutoLunDao.Core.Entities;
 using AutoLunDao.Core.Simulators;
 
@@ -24,6 +23,7 @@ public class LookaheadStrategy(int maxDepth = 5) : IDecisionStrategy
         var bestScore = 0f; // 初始分数为 0 而不是 float.MinValue，不打无意义的零分出牌
         foreach (var card in actions)
         {
+            if (StrategyUtils.WillCauseMissOfGoal(card, state)) continue;
             var score = SimulatePlay(state, simulator, card, maxDepth);
             if (score <= bestScore) continue;
             bestScore = score;
@@ -45,7 +45,7 @@ public class LookaheadStrategy(int maxDepth = 5) : IDecisionStrategy
 
         var bestFutureScore = nextActions
             .OfType<Card>()
-            .Where(c => !StrategyUtils.WillCauseMissOfExistingMaxGoal(c, simState))
+            .Where(c => !StrategyUtils.WillCauseMissOfGoal(c, simState))
             .Select(c => SimulatePlay(simState, simulator, c, depth - 1))
             .DefaultIfEmpty(0f)
             .Max();

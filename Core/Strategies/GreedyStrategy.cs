@@ -29,7 +29,7 @@ public class GreedyStrategy : IDecisionStrategy
             if (card is null) continue;
 
             // 检查是否会导致最大目标丢失
-            if (StrategyUtils.WillCauseMissOfExistingMaxGoal(card, state))
+            if (StrategyUtils.WillCauseMissOfGoal(card, state))
                 continue;
 
             // 模拟出牌
