@@ -10,7 +10,7 @@ namespace AutoLunDao.Benchmarks.Sandboxes;
 using Card = Card;
 
 /// <summary>
-///     模拟原版论道规则的沙盒。
+///     模拟「更好的论道Plus」Mod 论道规则的沙盒。
 /// </summary>
 public class BetterLunDaoPlusSandbox : ISandbox
 {

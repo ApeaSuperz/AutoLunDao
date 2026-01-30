@@ -46,7 +46,7 @@ AutoLunDao/
 │   ├── Simulators/         # 论道出牌模拟器
 │   └── Strategies/         # 决策策略
 ├── Engine/                 # 决策引擎
-├── GameBridges/            # 游戏桥接层
+├── GameBridges/            # 游戏桥接层（无游戏与 Unity 依赖）
 ├── UI/                     # UI 组件
 ├── Benchmarks/             # 策略基准测试
 │   └── Sandboxes/          # 论道游戏沙盒

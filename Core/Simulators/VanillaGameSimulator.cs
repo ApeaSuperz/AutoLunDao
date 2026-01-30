@@ -9,7 +9,7 @@ namespace AutoLunDao.Core.Simulators;
 using Card = Card;
 
 /// <summary>
-///     原版游戏沙盒环境，在内存中模拟游戏逻辑。
+///     原版游戏论道出牌模拟器，在内存中模拟游戏出牌逻辑。
 /// </summary>
 public class VanillaGameSimulator : ISimulator
 {

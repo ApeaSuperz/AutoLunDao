@@ -82,6 +82,7 @@ public class Plugin : BaseUnityPlugin
 
         var lookaheadStrategy = new LookaheadStrategy(MaxLookaheadDepth.Value);
 
+        // TODO: 检测其他 Mod 并提供相应的 Bridge
         Engine = new DecisionEngine(new VanillaGameBridge());
         Engine.Register(new BaselineStrategy());
         Engine.Register(new ImprovedBaselineStrategy());

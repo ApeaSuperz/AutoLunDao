@@ -3,7 +3,7 @@
 namespace AutoLunDao.GameBridges;
 
 /// <summary>
-///     游戏桥（适配器）接口，封装与觅长生的交互。
+///     游戏桥接器接口，封装与觅长生的交互。
 /// </summary>
 public interface IGameBridge
 {

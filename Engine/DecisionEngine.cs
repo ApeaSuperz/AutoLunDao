@@ -75,7 +75,6 @@ public class DecisionEngine
 
     private void _EnsureDecisionStrategy()
     {
-        // TODO: 检测其他 Mod 并提供相应的 Simulator
         if (!_Select(Plugin.StrategyName.Value))
             _Select(_registry.First().Key);
         if (_strategy is null)

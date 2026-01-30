@@ -26,11 +26,12 @@ public class VanillaGameSandbox : ISandbox
     private readonly Dictionary<int, int> _npcLevels = new();
     private readonly List<Card> _playerDeck;
     private readonly Dictionary<int, int> _playerLevels = new();
-    private readonly Random _random;
 
+    private readonly Random _random;
     private readonly int _seed;
 
     private readonly ISimulator _simulator;
+
     private int _randomCallCount; // 用于跟踪随机数调用次数，确保克隆时状态一致
     private State _state;
 
