@@ -10,7 +10,7 @@ namespace AutoLunDao.Core.Strategies;
 public class ImprovedBaselineStrategy : IDecisionStrategy
 {
     public string Name => "改进基准（NPC 改良）";
-    public string Description => "【速度：+10%】【得分：+7.41%】模仿 NPC 出牌规则，但优先打出可合成，轻量前瞻用于打破平局";
+    public string Description => "【耗时：+11.03%】【得分：+7.41%】模仿 NPC 出牌规则，但优先打出可合成，轻量前瞻用于打破平局";
 
     public Card? Decide(State state, ISimulator simulator)
     {

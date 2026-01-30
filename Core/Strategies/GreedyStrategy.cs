@@ -9,7 +9,7 @@ namespace AutoLunDao.Core.Strategies;
 public class GreedyStrategy : IDecisionStrategy
 {
     public string Name => "启发式贪心";
-    public string Description => "【速度：-29.52%】【得分：+0.23%】选择能立即最大化当前收益的牌";
+    public string Description => "【耗时：+83.63%】【得分：+27.57%】选择能立即最大化当前收益的牌";
 
     public Card? Decide(State state, ISimulator simulator)
     {

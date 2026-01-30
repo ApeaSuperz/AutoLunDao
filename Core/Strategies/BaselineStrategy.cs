@@ -10,7 +10,7 @@ namespace AutoLunDao.Core.Strategies;
 public class BaselineStrategy : IDecisionStrategy
 {
     public string Name => "基线（仿 NPC）";
-    public string Description => "【速度：+0% (基线)】【得分：+0% (基线)】模拟原版 NPC 的出牌逻辑，本来只是想用于基准测试，作为评估其它策略的标准，没想到效果还行";
+    public string Description => "【耗时：+0% (基线)】【得分：+0% (基线)】模拟原版 NPC 的出牌逻辑，本来只是想用于基准测试，作为评估其它策略的标准，没想到效果还行";
 
     public Card? Decide(State state, ISimulator simulator)
     {

@@ -20,6 +20,7 @@ Console.WriteLine("║                    策略评估报告                    
 Console.WriteLine("╚══════════════════════════════════════════════════════════════════╝");
 Console.WriteLine();
 
+EvaluationResult? baseline = null;
 foreach (var strategy in strategies)
 {
     var name = strategy.GetType().Name;
@@ -32,6 +33,26 @@ foreach (var strategy in strategies)
     Console.WriteLine($"  平均得分: {result.AveragePoints:F2} (范围: {result.MinPoints:F2} ~ {result.MaxPoints:F2})");
     Console.WriteLine($"  平均回合: {result.AverageTurns:F1} (范围: {result.MinTurns} ~ {result.MaxTurns})");
     Console.WriteLine($"  耗时: {result.TotalTime.TotalMilliseconds:F0}ms");
+
+    if (strategy is BaselineStrategy)
+    {
+        baseline = result;
+    }
+    else
+    {
+        Console.WriteLine("  相对基线：");
+        Console.WriteLine(
+            $"    胜场变化: {result.Wins - baseline!.Wins:+#;-#;0} ({(result.Wins - baseline.Wins) / (float)baseline.Wins * 100:+0.00;-0.00;0.00}%)");
+        Console.WriteLine(
+            $"    胜率变化: {(result.WinRate - baseline!.WinRate >= 0 ? "+" : "")}{result.WinRate - baseline.WinRate:P2}");
+        Console.WriteLine(
+            $"    得分变化: {result.AveragePoints - baseline.AveragePoints:+0.00;-0.00;0.00} ({(result.AveragePoints - baseline.AveragePoints) / baseline.AveragePoints * 100:+0.00;-0.00;0.00}%)");
+        Console.WriteLine(
+            $"    回合变化: {result.AverageTurns - baseline.AverageTurns:+0.00;-0.00;0.00} ({(result.AverageTurns - baseline.AverageTurns) / baseline.AverageTurns * 100:+0.00;-0.00;0.00}%)");
+        Console.WriteLine(
+            $"    耗时变化: {result.TotalTime.TotalMilliseconds - baseline.TotalTime.TotalMilliseconds:+0;-0;0}ms ({(result.TotalTime.TotalMilliseconds - baseline.TotalTime.TotalMilliseconds) / baseline.TotalTime.TotalMilliseconds * 100:+0.00;-0.00;0.00}%)");
+    }
+
     Console.WriteLine(new string('─', 50));
 }
 

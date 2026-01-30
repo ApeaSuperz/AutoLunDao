@@ -10,7 +10,7 @@ namespace AutoLunDao.Core.Strategies;
 public class LookaheadStrategy(int maxDepth = 5) : IDecisionStrategy
 {
     public string Name => "【推荐】深度受限前瞻";
-    public string Description => "【推荐】【速度：-134.52%】【得分：+37.65%】数据来源：最大搜索深度 =5 时。使用有限深度搜索评估未来状态，选择最优出牌";
+    public string Description => "【推荐】【耗时：+382.96%】【得分：+36.98%】数据来源：最大搜索深度 =5 时。使用有限深度搜索评估未来状态，选择最优出牌";
 
     public Card? Decide(State state, ISimulator simulator)
     {
