@@ -197,7 +197,7 @@ public class VanillaGameBridge : IGameBridge
         {
             // 全自动
             cards.First().SelectCard();
-            player.PlayerUseCard();
+            player.Invoke(nameof(PlayerController.PlayerUseCard), 0.5f);
         }
         else
         {
