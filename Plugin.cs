@@ -86,7 +86,7 @@ public class Plugin : BaseUnityPlugin
         Engine = new DecisionEngine(new VanillaGameBridge());
         Engine.Register(new BaselineStrategy());
         Engine.Register(new ImprovedBaselineStrategy());
-        // Engine.Register(new GreedyStrategy());
+        Engine.Register(new GreedyStrategy());
         Engine.Register(lookaheadStrategy);
 
         StrategyName = Config.Bind("通用", "决策策略", lookaheadStrategy.Name,
