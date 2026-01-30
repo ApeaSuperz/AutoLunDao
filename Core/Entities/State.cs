@@ -25,6 +25,8 @@ public class State(
 
     public readonly List<Card> Hand = hand;
 
+    public readonly bool IsInvalid;
+
     public readonly List<Topic> OriginalTopics =
         originalTopics ?? topics.Select(t => new Topic(t.ID, t.Goals.ToList())).ToList();
 
@@ -32,8 +34,6 @@ public class State(
     public readonly List<Card> Table = table;
     public readonly List<Topic> Topics = topics;
     public readonly int TurnsLeft = turnsLeft;
-
-    public readonly bool IsInvalid;
 
     private State() : this([], [], [], 0, 0, [])
     {

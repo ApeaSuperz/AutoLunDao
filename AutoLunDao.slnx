@@ -1,9 +1,9 @@
 <Solution>
-  <Folder Name="/Benchmarks/">
-    <Project Path="Benchmarks/AutoLunDao.Benchmarks.csproj" />
-  </Folder>
-  <Folder Name="/Core/">
-    <Project Path="Core/AutoLunDao.Core.csproj" />
-  </Folder>
-  <Project Path="AutoLunDao.csproj" />
+    <Folder Name="/Benchmarks/">
+        <Project Path="Benchmarks/AutoLunDao.Benchmarks.csproj"/>
+    </Folder>
+    <Folder Name="/Core/">
+        <Project Path="Core/AutoLunDao.Core.csproj"/>
+    </Folder>
+    <Project Path="AutoLunDao.csproj"/>
 </Solution>
